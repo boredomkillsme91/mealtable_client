@@ -1,0 +1,79 @@
+<ons-page id="login">
+    <div>
+        <div
+            id="loginForm"
+            style="text-align: center; margin-top: 200px"
+        >
+            <p>
+                <ons-input
+                    id="username"
+                    placeholder="Username"
+                    modifier="underbar"
+                ></ons-input>
+            </p>
+
+            <p>
+                <ons-input
+                    id="password"
+                    placeholder="Password"
+                    type="password"
+                    modifier="underbar"
+                >
+                </ons-input>
+            </p>
+
+            <p>
+                <ons-button id="loginButton">Sign in</ons-button>
+            </p>
+            <div
+                id="progressBar"
+                style="display: none"
+            >
+                <ons-progress-circular indeterminate></ons-progress-circular>
+                <p>Loging in..</p>
+            </div>
+        </div>
+        <div class="bottom-bar">
+            <div
+                class="bottom-bar__line-height"
+                style="text-align:center"
+            >
+                Shuffule yours meals
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function(){
+            // Initialization code
+            $('#loginButton').on('click', function(e) {
+                url = "https://mealtable.herokuapp.com/auth/login/"                
+                const username = document.querySelector('#username').value;
+                const password = document.querySelector('#password').value;     
+                
+                $('#progressBar').toggle();
+
+                $.ajax({                    
+                    url: url,                 
+                    method: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({
+                        'username': username,
+                        'password': password
+                        }),
+                    dataType: 'json',
+                    success: function(data){
+                        $('#progressBar').toggle();
+                        const navigator = document.querySelector('#navigator');
+                        navigator.resetToPage('home.html');
+                    },
+                    error: function(data){
+                        $('#progressBar').toggle();
+                        ons.notification.alert('Wrong username/password combination');
+                    }
+                });
+
+            })
+        });
+    </script>
+</ons-page>
